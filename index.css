@@ -23,7 +23,7 @@ body {
   --royal-purple: #4E1A73;
   --lavender-blue: #8A2BE2;
   --soft-violet: #BB86FC;
-  --golden-purple: #8E44AD; /* New color for golden purple */
+  --golden-purple: #8E44AD;  
   --text-light: #F4F4F9; 
   --text-dark: #1A1A1D;
   --rose-gold: linear-gradient(135deg, #C94B4B, #D97904, #E29F60);
@@ -38,7 +38,7 @@ body {
   padding: 1.2rem 3rem;
   background: var(--deep-purple);
   display: flex;
-  justify-content: space-between; /* Logo on left and links on the right */
+  justify-content: space-between;  
   align-items: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 1000;
@@ -285,7 +285,7 @@ section p {
   display: inline-block;
   margin-top: 1rem;
   padding: 0.5rem 1rem;
-  background: var(--rose-gold); /* Updated to use golden purple */
+  background: var(--rose-gold); 
   color: var(--text-dark);
   font-weight: 600;
   text-decoration: none;
@@ -331,6 +331,52 @@ section p {
   font-size: 1rem;
   margin: 0.3rem 0;
 }
+
+/* For Mobile Toggle */
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+  .nav-links {
+      max-height: 0; /* Initially hidden */
+      opacity: 0;
+      overflow: hidden;
+      flex-direction: column;
+      width: 100%;
+      background: var(--deep-purple, #4B0082);
+      position: absolute;
+      top: 90px;
+      left: 0;
+      text-align: center;
+      padding: 0;
+      transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+  }
+
+  .nav-links.active {
+      max-height: 300px; /* Adjust based on menu height */
+      opacity: 1;
+      padding: 10px 0;
+  }
+
+  .menu-toggle {
+      display: block;
+      transition: transform 0.3s ease-in-out;
+  }
+
+  /* Animate the menu icon */
+  .menu-toggle.active {
+      transform: rotate(90deg);
+  }
+}
+.nav-links.active {
+  display: flex;  
+}
+
 /* Contact Section */
 .contact form {
   display: flex;
@@ -341,28 +387,28 @@ section p {
 }
 
 .contact input, .contact textarea {
-  padding: 0.8rem; /* Reduced padding while maintaining ratio */
-  border: 1px solid #5a3370; /* Subtle purple border */
+  padding: 0.8rem;  
+  border: 1px solid #5a3370; 
   border-radius: 8px;
   font-size: 1rem;
-  color: #ffffff; /* White text */
-  background: #3b1e5a; /* Dark purple background */
+  color: #ffffff;
+  background: #3b1e5a;  
   outline: none;
 }
 
 .contact input::placeholder, 
 .contact textarea::placeholder {
-  color: rgba(255, 255, 255, 0.6); /* Lighter placeholder color */
+  color: rgba(255, 255, 255, 0.6);  
 }
 
 .contact input:focus, 
 .contact textarea:focus {
-  border-color: #d18eff; /* Lighter purple on focus */
+  border-color: #d18eff;  
   box-shadow: 0 0 5px rgba(209, 142, 255, 0.5);
 }
 
 .contact button {
-  padding: 0.8rem 0; /* Slightly reduced padding */
+  padding: 0.8rem 0; 
   background: var(--rose-gold);
   color: var(--text-light);
   font-weight: 600;
@@ -388,7 +434,7 @@ section p {
 }
 
 .languages h2 {
-  color: #ff9f43; /* Adjust to match your theme */
+  color: #ff9f43;  
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
@@ -404,17 +450,38 @@ section p {
   padding: 0.5rem 0;
 }
 
-/* Footer */
+ /* Footer */
 .footer {
-  text-align: center;
-  padding: 1.5rem;
   background-color: var(--deep-purple);
-  color: var(--soft-violet);
+  color: var(--text-light);
+  padding: 2rem;
+  text-align: center;
 }
 
-.footer p {
-  font-size: 0.9rem;
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.footer-logo h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #C94B4B, #D97904, #E29F60); 
+  -webkit-background-clip: text; 
+  color: transparent;
+
+}
+.footer-copyright p {
+  font-size: 1rem;
   color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+  }
 }
 
 /* Responsive Design */
