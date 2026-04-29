@@ -13,19 +13,18 @@
 
     <style>
         :root {
-            --bg: #05070a;
-            --surface: #0f172a;
-            --surface-hover: #1e293b;
-            --border: #334155;
-            --accent: #22d3ee;
-            --accent-glow: rgba(34, 211, 238, 0.3);
-            --secondary: #818cf8;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --color-canvas-default: #0d1117;
+            --color-canvas-subtle: #161b22;
+            --color-border-default: #30363d;
+            --color-border-muted: #21262d;
+            --color-accent-fg: #58a6ff;
+            --color-accent-emphasis: #1f6feb;
+            --color-fg-default: #c9d1d9;
+            --color-fg-muted: #8b949e;
+            --color-success-fg: #3fb950;
+            --color-attention-fg: #d29922;
+            --color-danger-fg: #f85149;
+            --transition: all 0.2s ease;
         }
 
         * {
@@ -35,465 +34,335 @@
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text-primary);
-            font-family: 'Outfit', sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-            cursor: default;
+            background-color: var(--color-canvas-default);
+            color: var(--color-fg-default);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+        .mono { font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace; }
 
-        /* Typography */
-        h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-
-        /* Layout */
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 32px;
         }
 
         /* ─── HEADER ─── */
         header {
-            position: fixed;
+            background-color: #010409;
+            border-bottom: 1px solid var(--color-border-default);
+            padding: 16px 0;
+            position: sticky;
             top: 0;
-            width: 100%;
-            padding: 1.5rem 0;
-            z-index: 1000;
-            background: rgba(5, 7, 10, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
+            z-index: 100;
         }
 
         .header-content {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 16px;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -1px;
+            font-weight: 600;
+            font-size: 16px;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
         }
 
-        .logo span { color: var(--accent); }
+        .logo svg { fill: var(--color-fg-default); }
 
         nav ul {
             display: flex;
-            gap: 2rem;
+            gap: 16px;
             list-style: none;
         }
 
         nav a {
-            color: var(--text-secondary);
+            color: var(--color-fg-default);
             text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: var(--transition);
+            font-weight: 400;
+            font-size: 14px;
         }
 
-        nav a:hover { color: var(--accent); }
+        nav a:hover { color: var(--color-fg-muted); }
 
-        /* ─── HERO ─── */
-        .hero {
-            padding: 12rem 0 6rem;
+        /* ─── PROFILE HEADER ─── */
+        .profile-header {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--color-border-default);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 296px 1fr;
+            gap: 32px;
+        }
+
+        .avatar-container {
             position: relative;
+        }
+
+        .avatar {
+            width: 296px;
+            height: 296px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border-default);
+            background: var(--color-canvas-subtle);
             overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -20%;
-            right: -10%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            z-index: -1;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .hero-tag {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            background: rgba(34, 211, 238, 0.1);
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            border-radius: 2rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .hero h1 {
-            font-size: 4.5rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #fff, var(--text-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin-bottom: 2.5rem;
-        }
-
-        .hero-actions {
             display: flex;
-            gap: 1.5rem;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: var(--transition);
-            display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
         }
 
-        .btn-primary {
-            background: var(--accent);
-            color: var(--bg);
+        .avatar svg { width: 150px; height: 150px; fill: var(--color-fg-muted); }
+
+        .profile-info {
+            padding-top: 16px;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px -5px var(--accent-glow);
+        .profile-info h1 {
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1.25;
         }
 
-        .btn-secondary {
-            border: 1px solid var(--border);
-            color: var(--text-primary);
+        .profile-info h2 {
+            font-size: 20px;
+            font-weight: 300;
+            color: var(--color-fg-muted);
+            margin-bottom: 16px;
         }
 
-        .btn-secondary:hover {
-            background: var(--surface);
-            border-color: var(--text-secondary);
+        .profile-bio {
+            font-size: 16px;
+            margin-bottom: 16px;
         }
 
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .stat-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 1.5rem;
-            border-radius: 1rem;
-            transition: var(--transition);
-        }
-
-        .stat-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-        }
-
-        .stat-val {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--accent);
-            margin-bottom: 0.2rem;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* ─── DVA DASHBOARD SECTION ─── */
-        .section-padding { padding: 8rem 0; }
-
-        .section-title {
-            margin-bottom: 4rem;
-            text-align: center;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .section-title p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        /* Dashboard Look */
-        .dva-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 1.5rem;
-            overflow: hidden;
+        .profile-meta {
             display: flex;
             flex-direction: column;
-            margin-bottom: 3rem;
+            gap: 8px;
+            color: var(--color-fg-default);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        /* ─── TABS ─── */
+        .nav-tabs {
+            border-bottom: 1px solid var(--color-border-default);
+            margin-top: 24px;
+        }
+
+        .tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: var(--color-fg-default);
+            font-size: 14px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            font-weight: 600;
+            border-bottom-color: #f78166;
+        }
+
+        .tab-count {
+            background-color: var(--color-border-muted);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        /* ─── REPO CARDS ─── */
+        .section-title {
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 16px;
+            padding-top: 24px;
+        }
+
+        .repo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .repo-card {
+            background-color: var(--color-canvas-default);
+            border: 1px solid var(--color-border-default);
+            border-radius: 6px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
             transition: var(--transition);
         }
 
-        .dva-card:hover {
-            border-color: var(--secondary);
-            box-shadow: var(--card-shadow);
+        .repo-card:hover {
+            background-color: var(--color-canvas-subtle);
         }
 
-        .dva-header {
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--border);
+        .repo-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .repo-name {
+            color: var(--color-accent-fg);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .repo-name:hover { text-decoration: underline; }
+
+        .repo-badge {
+            font-size: 12px;
+            color: var(--color-fg-muted);
+            border: 1px solid var(--color-border-default);
+            padding: 0 7px;
+            border-radius: 2em;
+        }
+
+        .repo-desc {
+            font-size: 12px;
+            color: var(--color-fg-muted);
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .repo-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--color-fg-muted);
+        }
+
+        .lang-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        /* ─── CONTRIBUTION GRAPH ─── */
+        .contributions {
+            border: 1px solid var(--color-border-default);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 32px;
+        }
+
+        .graph-header {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .graph-container {
+            display: flex;
+            gap: 2px;
+            overflow-x: auto;
+        }
+
+        .graph-col {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .graph-cell {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            background-color: #161b22;
+        }
+
+        .lvl-1 { background-color: #0e4429; }
+        .lvl-2 { background-color: #006d32; }
+        .lvl-3 { background-color: #26a641; }
+        .lvl-4 { background-color: #39d353; }
+
+        /* ─── SKILLS BOX ─── */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .skill-box {
+            border: 1px solid var(--color-border-default);
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .skill-box h4 {
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 2px 10px;
+            background-color: var(--color-canvas-subtle);
+            border: 1px solid var(--color-border-default);
+            border-radius: 2em;
+            font-size: 12px;
+            margin: 0 4px 8px 0;
+            color: var(--color-fg-default);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--color-border-default);
+            padding: 40px 0;
+            margin-top: 64px;
+            color: var(--color-fg-muted);
+            font-size: 12px;
+        }
+
+        .footer-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.02);
         }
 
-        .dva-badge {
-            padding: 0.2rem 0.8rem;
-            background: rgba(129, 140, 248, 0.1);
-            color: var(--secondary);
-            border-radius: 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            border: 1px solid rgba(129, 140, 248, 0.3);
-        }
-
-        .dva-content {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 2rem;
-            padding: 2.5rem;
-        }
-
-        .dva-visual {
-            background: #000;
-            border-radius: 1rem;
-            padding: 2rem;
-            position: relative;
-            min-height: 300px;
+        .footer-links {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border);
+            gap: 16px;
         }
 
-        .chart-mock {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .chart-bar {
-            height: 12px;
-            background: var(--accent);
-            border-radius: 4px;
-            opacity: 0.8;
-            transition: width 1s ease-out;
-        }
-
-        .dva-info h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-
-        .dva-tags {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            padding: 0.2rem 0.6rem;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            color: var(--text-secondary);
-        }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .kpi-item {
-            padding: 0.8rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 0.5rem;
-            border-left: 3px solid var(--accent);
-        }
-
-        .kpi-name { font-size: 0.75rem; color: var(--text-secondary); display: block; }
-        .kpi-val { font-size: 1rem; font-weight: 700; }
-
-        /* ─── PROJECT GRID ─── */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .card:hover {
-            background: var(--surface-hover);
-            border-color: var(--text-secondary);
-            transform: translateY(-5px);
-        }
-
-        .card-icon {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: var(--accent);
-        }
-
-        .card h3 { margin-bottom: 1rem; }
-        .card p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; }
-
-        .card-link {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent);
+        .footer-links a {
+            color: var(--color-accent-fg);
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
         }
 
-        /* ─── SKILLS ─── */
-        .skills-section {
-            background: #0a0f1a;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-        }
-
-        .skill-group h4 {
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-        }
-
-        .skill-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-        }
-
-        .skill-badge {
-            background: var(--surface);
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-            border: 1px solid var(--border);
-            transition: var(--transition);
-        }
-
-        .skill-badge:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        /* ─── FOOTER ─── */
-        footer {
-            padding: 6rem 0 3rem;
-            text-align: center;
-            border-top: 1px solid var(--border);
-        }
-
-        .footer-social {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .social-link {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            transition: var(--transition);
-        }
-
-        .social-link:hover { color: var(--accent); }
-
-        .copyright {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate { animation: fadeIn 0.8s ease-out forwards; }
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 0.5; }
-        }
-
-        /* Mobile */
-        @media (max-width: 968px) {
-            .hero-grid { grid-template-columns: 1fr; text-align: center; }
-            .hero h1 { font-size: 3rem; }
-            .hero p { margin: 0 auto 2rem; }
-            .hero-actions { justify-content: center; }
-            .dva-content { grid-template-columns: 1fr; }
-            .dva-visual { min-height: 200px; }
-            nav { display: none; }
+        @media (max-width: 768px) {
+            .profile-grid { grid-template-columns: 1fr; }
+            .repo-grid { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .avatar { width: 100px; height: 100px; margin: 0 auto; }
+            .avatar svg { width: 50px; height: 50px; }
+            .profile-info { text-align: center; }
+            .meta-item { justify-content: center; }
         }
     </style>
 </head>
@@ -502,310 +371,147 @@
     <!-- Header -->
     <header>
         <div class="container header-content">
-            <div class="logo">VETRI<span>.DVA</span></div>
+            <div class="logo">
+                <svg height="32" viewBox="0 0 16 16" width="32"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                Vetri / Portfolio
+            </div>
             <nav>
                 <ul>
-                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#projects">Repositories</a></li>
                     <li><a href="#skills">Skills</a></li>
-                    <li><a href="#experience">Experience</a></li>
-                    <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container hero-grid">
-            <div class="hero-text animate">
-                <span class="hero-tag">Data Visualization & Analytics</span>
-                <h1>Turning Raw Data into <span>Strategic Assets</span>.</h1>
-                <p>B.Tech CS & AI student at Newton School of Technology. Specializing in spatiotemporal forecasting, financial intelligence, and interactive dashboards.</p>
-                <div class="hero-actions">
-                    <a href="#projects" class="btn btn-primary">View Projects</a>
-                    <a href="https://github.com/mitul-bhatia/Sec-A_g-4_F1_Race_Strategy_Intelligence" target="_blank" class="btn btn-secondary">Current Research</a>
-                </div>
-            </div>
-            <div class="hero-stats animate delay-1">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-val mono">726K+</div>
-                        <div class="stat-label">Data Points</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-val mono">95%</div>
-                        <div class="stat-label">Model Accuracy</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-val mono">10+</div>
-                        <div class="stat-label">DVA KPIs</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-val mono">9.1</div>
-                        <div class="stat-label">CGPA</div>
+    <div class="container">
+        <div class="profile-grid">
+            <!-- Sidebar -->
+            <aside class="profile-header">
+                <div class="avatar-container">
+                    <div class="avatar">
+                        <svg viewBox="0 0 16 16" width="16" height="16"><path d="M10.561 8.073a6.005 6.005 0 013.432 5.142.75.75 0 11-1.493.17 4.5 4.5 0 00-8.993 0 .75.75 0 11-1.493-.17 6.005 6.005 0 013.432-5.142 3.999 3.999 0 115.122 0zM8 8a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path></svg>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+                <div class="profile-info">
+                    <h1>Vetriselvan R</h1>
+                    <h2>vetri-78640</h2>
+                    <div class="profile-bio">
+                        Data Visualization & AI Specialist. B.Tech CS & AI student at Newton School of Technology.
+                    </div>
+                    <div class="profile-meta">
+                        <div class="meta-item">📍 India</div>
+                        <div class="meta-item">📧 vetriselvan.r@newton.school</div>
+                        <div class="meta-item">🔗 <a href="https://linkedin.com/in/vetriselvan-r" style="color: var(--color-accent-fg); text-decoration: none;">LinkedIn</a></div>
+                    </div>
+                </div>
+            </aside>
 
-    <!-- Featured DVA Project (F1) -->
-    <section id="projects" class="section-padding">
-        <div class="container">
-            <div class="section-title animate">
-                <h2>Featured Data Analytics</h2>
-                <p>Comprehensive end-to-end analytical pipelines and visual stories.</p>
-            </div>
+            <!-- Main Content -->
+            <main>
+                <nav class="nav-tabs">
+                    <a href="#" class="tab active">
+                        Overview
+                    </a>
+                    <a href="#projects" class="tab">
+                        Repositories <span class="tab-count">5</span>
+                    </a>
+                    <a href="#skills" class="tab">
+                        Skills
+                    </a>
+                </nav>
 
-            <div class="dva-card animate delay-1">
-                <div class="dva-header">
-                    <div class="mono" style="font-size: 0.9rem; color: var(--text-secondary);">CASE_STUDY // F1_STRATEGY_INTELLIGENCE</div>
-                    <div class="dva-badge">DVA CAPSTONE</div>
-                </div>
-                <div class="dva-content">
-                    <div class="dva-visual">
-                        <div class="chart-mock">
-                            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-secondary); margin-bottom:0.5rem;">
-                                <span>Grid Position</span>
-                                <span>Finish Position</span>
+                <!-- Overview Section -->
+                <section id="overview">
+                    <div class="section-title">Popular repositories</div>
+                    <div class="repo-grid">
+                        <!-- F1 Repo -->
+                        <div class="repo-card">
+                            <div class="repo-header">
+                                <svg height="16" viewBox="0 0 16 16" width="16"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8a2.501 2.501 0 01-2.5-2.5V3a1 1 0 00-1-1 .75.75 0 010-1.5A2.5 2.5 0 014.5 0h8z"></path></svg>
+                                <a href="https://github.com/mitul-bhatia/Sec-A_g-4_F1_Race_Strategy_Intelligence" class="repo-name">F1_Race_Strategy_Intelligence</a>
+                                <span class="repo-badge">Public</span>
                             </div>
-                            <div class="chart-bar" style="width: 90%;"></div>
-                            <div class="chart-bar" style="width: 75%; background: var(--secondary);"></div>
-                            <div class="chart-bar" style="width: 60%;"></div>
-                            <div class="chart-bar" style="width: 85%; background: var(--secondary);"></div>
-                            <div class="chart-bar" style="width: 40%;"></div>
-                            <div style="margin-top:auto; font-size:0.6rem; color:var(--accent); text-align:right;">LIVE_FEED: PROCESSING_ERGAS_DB...</div>
-                        </div>
-                    </div>
-                    <div class="dva-info">
-                        <h3>F1 Race Strategy Intelligence</h3>
-                        <div class="dva-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Tableau</span>
-                            <span class="tag">ETL Pipeline</span>
-                            <span class="tag">Hypothesis Testing</span>
-                        </div>
-                        <p>Analyzing how strategic execution—qualifying precision, pit stop efficiency, and circuit tactics—drives Constructor Championship outcomes. Processed 76 F1 seasons and 111 attributes.</p>
-                        <div class="kpi-grid">
-                            <div class="kpi-item">
-                                <span class="kpi-name">KPI: Grid-to-Finish Delta</span>
-                                <span class="kpi-val mono">+4.2 Positions</span>
+                            <div class="repo-desc">
+                                End-to-end analytical pipeline for F1 strategy optimization. Includes ETL, ML clustering, and Tableau dashboards.
                             </div>
-                            <div class="kpi-item">
-                                <span class="kpi-name">KPI: Win Conv. from Pole</span>
-                                <span class="kpi-val mono">68.4% Avg</span>
+                            <div class="repo-stats">
+                                <span><span class="lang-dot" style="background-color: #3572A5;"></span>Python</span>
+                                <span>⭐ 12</span>
                             </div>
                         </div>
-                        <a href="https://github.com/mitul-bhatia/Sec-A_g-4_F1_Race_Strategy_Intelligence" target="_blank" class="btn btn-secondary" style="margin-top: 2rem; width: 100%; justify-content: center;">Explore Notebooks</a>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Project 2: Retail Data Intelligence -->
-            <div class="dva-card animate delay-2">
-                <div class="dva-header">
-                    <div class="mono" style="font-size: 0.9rem; color: var(--text-secondary);">ANALYTICS // BIG_MART</div>
-                    <div class="dva-badge">ENTERPRISE BI</div>
-                </div>
-                <div class="dva-content">
-                    <div class="dva-visual">
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;"></div>
-                            <div class="mono" style="font-size: 0.8rem; color: var(--accent);">PIVOT ARCHITECTURE</div>
-                            <div style="margin-top: 1rem; width: 150px; height: 150px; border: 2px dashed var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 20px;">
-                                <div style="width: 100%; height: 25px; background: var(--accent); margin-bottom: 10px; opacity: 0.9;"></div>
-                                <div style="width: 75%; height: 25px; background: var(--accent); margin-bottom: 10px; opacity: 0.7;"></div>
-                                <div style="width: 50%; height: 25px; background: var(--accent); opacity: 0.5;"></div>
+                        <!-- Retail Repo -->
+                        <div class="repo-card">
+                            <div class="repo-header">
+                                <svg height="16" viewBox="0 0 16 16" width="16"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8a2.501 2.501 0 01-2.5-2.5V3a1 1 0 00-1-1 .75.75 0 010-1.5A2.5 2.5 0 014.5 0h8z"></path></svg>
+                                <a href="https://github.com/sanath-2512/SecA-G10" class="repo-name">Retail_Data_Intelligence</a>
+                                <span class="repo-badge">Public</span>
+                            </div>
+                            <div class="repo-desc">
+                                Enterprise-grade sales intelligence for Big Mart. 8.5K+ records cleaned, 25+ pivot architectures built.
+                            </div>
+                            <div class="repo-stats">
+                                <span><span class="lang-dot" style="background-color: #e34c26;"></span>HTML</span>
+                                <span>⭐ 8</span>
                             </div>
                         </div>
                     </div>
-                    <div class="dva-info">
-                        <h3>Retail Sales Data Intelligence</h3>
-                        <div class="dva-tags">
-                            <span class="tag">Excel</span>
-                            <span class="tag">Tableau</span>
-                            <span class="tag">Data Cleaning</span>
-                            <span class="tag">Pivot Tables</span>
+
+                    <!-- Contribution Graph -->
+                    <div class="graph-header">452 contributions in the last year</div>
+                    <div class="contributions">
+                        <div class="graph-container">
+                            <!-- Mock weeks -->
+                            <div class="graph-col"><div class="graph-cell lvl-1"></div><div class="graph-cell lvl-2"></div><div class="graph-cell"></div><div class="graph-cell lvl-4"></div><div class="graph-cell"></div><div class="graph-cell lvl-1"></div><div class="graph-cell lvl-3"></div></div>
+                            <div class="graph-col"><div class="graph-cell"></div><div class="graph-cell lvl-1"></div><div class="graph-cell lvl-2"></div><div class="graph-cell lvl-3"></div><div class="graph-cell lvl-4"></div><div class="graph-cell"></div><div class="graph-cell"></div></div>
+                            <div class="graph-col"><div class="graph-cell lvl-3"></div><div class="graph-cell lvl-1"></div><div class="graph-cell"></div><div class="graph-cell"></div><div class="graph-cell lvl-1"></div><div class="graph-cell lvl-2"></div><div class="graph-cell lvl-4"></div></div>
+                            <!-- ... many more columns ... -->
                         </div>
-                        <p>Enterprise-grade data intelligence initiative on Big Mart sales. Systematically cleaned and validated 8,522 records, built 25+ dimensional pivot tables, and engineered 16+ custom metrics.</p>
-                        <div class="kpi-grid">
-                            <div class="kpi-item">
-                                <span class="kpi-name">Records Cleaned</span>
-                                <span class="kpi-val mono">8,522 (100%)</span>
+                    </div>
+                </section>
+
+                <!-- Skills Section -->
+                <section id="skills">
+                    <div class="section-title">Analytical Arsenal</div>
+                    <div class="skills-grid">
+                        <div class="skill-box">
+                            <h4>Analysis & Processing</h4>
+                            <div class="skill-list">
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">Pandas</span>
+                                <span class="skill-tag">SQL</span>
+                                <span class="skill-tag">ETL</span>
+                                <span class="skill-tag">Statsmodels</span>
                             </div>
-                            <div class="kpi-item">
-                                <span class="kpi-name">Analytics Built</span>
-                                <span class="kpi-val mono">25+ Pivot Views</span>
+                        </div>
+                        <div class="skill-box">
+                            <h4>Visualization & BI</h4>
+                            <div class="skill-list">
+                                <span class="skill-tag">Tableau</span>
+                                <span class="skill-tag">Power BI</span>
+                                <span class="skill-tag">Plotly</span>
+                                <span class="skill-tag">Matplotlib</span>
                             </div>
                         </div>
-                        <div style="margin-top: 1.5rem;">
-                            <a href="https://github.com/sanath-2512/SecA-G10" target="_blank" class="btn btn-secondary">View Repository ↗</a>
+                        <div class="skill-box">
+                            <h4>Education</h4>
+                            <div class="skill-desc" style="font-size: 12px; color: var(--color-fg-muted);">
+                                <strong>B.Tech CS & AI</strong><br>
+                                Newton School of Technology<br>
+                                CGPA: 9.1
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </section>
+            </main>
         </div>
-    </section>
-
-    <!-- More Projects Grid -->
-    <section class="section-padding" style="background: rgba(255,255,255,0.01);">
-        <div class="container">
-            <div class="section-title">
-                <h2>Analytical Repositories</h2>
-                <p>A collection of tools and insights from finance to healthcare.</p>
-            </div>
-            <div class="project-grid">
-                <!-- Missingno -->
-                <div class="card">
-                    <div class="card-icon"></div>
-                    <div class="mono" style="font-size: 0.7rem; color: var(--accent); margin-bottom: 0.5rem;">DATAVIZ // OPEN_SOURCE</div>
-                    <h3>Missingno: Data Visualization</h3>
-                    <p>A flexible and easy-to-use missing data visualization module for Python. Built on top of matplotlib and seaborn, it allows for quick visual summaries of dataset completeness.</p>
-                    <div class="dva-tags" style="margin-bottom: 1rem;">
-                        <span class="tag">Python</span> <span class="tag">Matplotlib</span> <span class="tag">Data Visualization</span>
-                    </div>
-                    <a href="https://github.com/ResidentMario/missingno" class="card-link" target="_blank">View Repository ↗</a>
-                </div>
-
-                <!-- YData Profiling -->
-                <div class="card">
-                    <div class="card-icon"></div>
-                    <div class="mono" style="font-size: 0.7rem; color: var(--accent); margin-bottom: 0.5rem;">ANALYTICS // EDA_TOOL</div>
-                    <h3>YData Profiling: Automated EDA</h3>
-                    <p>Automated profiling tool for exploratory data analysis. Generates comprehensive HTML reports from pandas DataFrames, including missing values, correlations, and descriptive statistics.</p>
-                    <div class="dva-tags" style="margin-bottom: 1rem;">
-                        <span class="tag">Python</span> <span class="tag">Pandas</span> <span class="tag">EDA</span>
-                    </div>
-                    <a href="https://github.com/ydataai/ydata-profiling" class="card-link" target="_blank">View Repository ↗</a>
-                </div>
-
-                <!-- Graphic Walker -->
-                <div class="card">
-                    <div class="card-icon"></div>
-                    <div class="mono" style="font-size: 0.7rem; color: var(--accent); margin-bottom: 0.5rem;">BI // TABLEAU_ALTERNATIVE</div>
-                    <h3>Graphic Walker: Visual Analytics</h3>
-                    <p>An open-source alternative to Tableau. An embeddable, interactive visual analytics component for deep data exploration and visualization in web environments.</p>
-                    <div class="dva-tags" style="margin-bottom: 1rem;">
-                        <span class="tag">React</span> <span class="tag">Data Visualization</span> <span class="tag">BI Dashboards</span>
-                    </div>
-                    <a href="https://github.com/Kanaries/graphic-walker" class="card-link" target="_blank">View Repository ↗</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="section-padding skills-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Analytical Arsenal</h2>
-                <p>The tech stack I use to solve complex data problems.</p>
-            </div>
-            <div class="skills-container">
-                <div class="skill-group">
-                    <h4>Data Analysis & Processing</h4>
-                    <div class="skill-list">
-                        <span class="skill-badge">Python</span>
-                        <span class="skill-badge">Pandas</span>
-                        <span class="skill-badge">NumPy</span>
-                        <span class="skill-badge">SciPy</span>
-                        <span class="skill-badge">Statsmodels</span>
-                        <span class="skill-badge">SQL</span>
-                        <span class="skill-badge">ETL Pipelines</span>
-                    </div>
-                </div>
-                <div class="skill-group">
-                    <h4>Visualization & BI</h4>
-                    <div class="skill-list">
-                        <span class="skill-badge">Tableau</span>
-                        <span class="skill-badge">Power BI</span>
-                        <span class="skill-badge">Matplotlib</span>
-                        <span class="skill-badge">Seaborn</span>
-                        <span class="skill-badge">Plotly</span>
-                        <span class="skill-badge">Excel (Advanced)</span>
-                        <span class="skill-badge">Google Sheets</span>
-                    </div>
-                </div>
-                <div class="skill-group">
-                    <h4>Domain Analytics</h4>
-                    <div class="skill-list">
-                        <span class="skill-badge">Financial Modeling</span>
-                        <span class="skill-badge">Sports Analytics</span>
-                        <span class="skill-badge">Healthcare Analytics</span>
-                        <span class="skill-badge">Retail Data Intelligence</span>
-                        <span class="skill-badge">Statistical Hypothesis Testing</span>
-                        <span class="skill-badge">KPI Design</span>
-                        <span class="skill-badge">EDA</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education & Certs -->
-    <section id="experience" class="section-padding">
-        <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
-            <div>
-                <div class="section-title" style="text-align: left; margin-bottom: 2rem;">
-                    <h2>Education</h2>
-                </div>
-                <div class="card" style="padding: 1.5rem; margin-bottom: 1rem;">
-                    <h4 style="color: var(--accent);">B.Tech Computer Science & AI</h4>
-                    <p style="margin-bottom: 0.5rem;">Newton School of Technology, Rishihood University</p>
-                    <div class="mono" style="font-size: 0.8rem; color: var(--text-secondary);">2024 — PRESENT | CGPA: 9.1</div>
-                </div>
-            </div>
-            <div>
-                <div class="section-title" style="text-align: left; margin-bottom: 2rem;">
-                    <h2>Certifications</h2>
-                </div>
-                <div class="skill-list">
-                    <span class="skill-badge">Machine Learning (Columbia+)</span>
-                    <span class="skill-badge">Generative AI for Data Science (Microsoft)</span>
-                    <span class="skill-badge">Prompt Engineering (Columbia+)</span>
-                    <span class="skill-badge">Back-End with Node.js (IBM)</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact / Footer -->
-    <footer id="contact">
-        <div class="container">
-            <h2>Let's build something <span>insightful</span>.</h2>
-            <p style="color: var(--text-secondary); margin-top: 1rem; margin-bottom: 3rem;">Always open to discussing data strategy, AI research, and high-stakes analytics.</p>
-            
-            <div class="footer-social">
-                <a href="https://github.com/vetri-78640" target="_blank" class="social-link">GitHub</a>
-                <a href="https://www.linkedin.com/in/vetriselvan-r/" target="_blank" class="social-link">LinkedIn</a>
-                <a href="https://www.instagram.com/im.vetri/" target="_blank" class="social-link">Instagram</a>
-            </div>
-
-            <p class="copyright">
-                &copy; <span id="year"></span> Vetriselvan R.
-            </p>
-        </div>
-    </footer>
+    </div>
 
     <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Simple animation trigger on scroll
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.card, .dva-card, .section-title').forEach(el => {
-            observer.observe(el);
-        });
+        const yearSpan = document.getElementById('year');
+        if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
